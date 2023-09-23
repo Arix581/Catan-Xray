@@ -1,5 +1,5 @@
 // Made by Benjamin Espenschied
-// V1.2
+// V1.2.2
 
 using System;
 
@@ -7,88 +7,142 @@ namespace myProgram
 {
     class Program
     {
+        CatanPlayer[] players;
+        int playerCount;
         static void Main(string[] args)
         {
             //put code here
+            
+            Console.WriteLine("Welcome to Catan! How many players would you like?");
+            playerCount = Console.ReadLine();
+            players = new CatanPlayer[playerCount];
+            for (int i = 0; i < playerCount; i++)
+            {
+                Console.WriteLine("What is the name of the " + (i+1).ToString() + "th player? ");
+                players[i] = new CatanPlayer(Console.ReadLine());
+            }
+        }
+    }
+    
+    class Product
+    {
+        int oreCost;
+        int brickCost;
+        int sheepCost;
+        int grainCost;
+        int woodCost;
+        
+        public Product(int ore, int brick, int sheep, int grain, int wood)
+        {
+            oreCost = ore;
+            brickCost = brick;
+            sheepCost = sheep;
+            grainCost = grain;
+            woodCost = wood;
         }
     }
     
     static class Store
     {
-        public void Exchange(CatanPlayer player, string input, string output)
+        static public void Exchange(CatanPlayer player, string input, string output, int price = 4)
         {
-            int price = 4;
             switch (input, output) 
             {
                 // Ore Trades
-                case "ore", "brick":
+                case ("ore", "brick"):
                     player.ore -= price;
                     player.brick++;
                     break;
-                case "ore", "sheep":
+                case ("ore", "sheep"):
                     player.ore -= price;
                     player.sheep++;
                     break;
-                case "ore", "grain":
+                case ("ore", "grain"):
                     player.ore -= price;
                     player.grain++;
                     break;
-                case "ore", "wood":
+                case ("ore", "wood"):
                     player.ore -= price;
                     player.wood++;
                     break;
                 // Brick Trades
-                case "brick", "ore":
+                case ("brick", "ore"):
                     player.brick -= price;
                     player.ore++;
                     break;
-                case "brick", "sheep":
+                case ("brick", "sheep"):
                     player.brick -= price;
                     player.sheep++;
                     break;
-                case "brick", "grain":
+                case ("brick", "grain"):
                     player.brick -= price;
                     player.grain++;
                     break;
-                case "brick", "wood":
+                case ("brick", "wood"):
                     player.brick -= price;
                     player.wood++;
                     break;
                 // Sheep Trades
-                case "sheep", "ore":
+                case ("sheep", "ore"):
                     player.sheep -= price;
                     player.ore++;
                     break;
-                case "sheep", "brick":
+                case ("sheep", "brick"):
                     player.sheep -= price;
                     player.brick++;
                     break;
-                case "sheep", "grain":
+                case ("sheep", "grain"):
                     player.sheep -= price;
                     player.grain++;
                     break;
-                case "sheep", "wood":
-                    player.sheep -= 4;
+                case ("sheep", "wood"):
+                    player.sheep -= price;
                     player.wood++;
                     break;
                 // Grain Trades
-                case "grain", "ore":
-                    player.grain -= 4;
+                case ("grain", "ore"):
+                    player.grain -= price;
                     player.ore++;
                     break;
-                case "grain", "brick":
-                    player.grain -= 4;
+                case ("grain", "brick"):
+                    player.grain -= price;
                     player.brick++;
                     break;
-                case "grain", "sheep":
-                    player.grain -= 4;
+                case ("grain", "sheep"):
+                    player.grain -= price;
                     player.sheep++;
                     break;
-                case "grain", "wood":
-                    player.grain -= 4;
+                case ("grain", "wood"):
+                    player.grain -= price;
                     player.wood++;
                     break;
+                // Grain Trades
+                case ("wood", "ore"):
+                    player.wood -= price;
+                    player.ore++;
+                    break;
+                case ("wood", "brick"):
+                    player.wood -= price;
+                    player.brick++;
+                    break;
+                case ("wood", "sheep"):
+                    player.wood -= price;
+                    player.sheep++;
+                    break;
+                case ("wood", "grain"):
+                    player.wood -= price;
+                    player.grain++;
+                    break;
             }
+        }
+        
+        static public void Buy(CatanPlayer player, Product product)
+        {
+            player.ore -= product.oreCost;
+            player.brick -= product.brickCost;
+            player.sheep -= product.sheepCost;
+            player.grain -= product.grainCost;
+            player.wood -= product.woodCost;
         }
     }
     
