@@ -1,5 +1,5 @@
 // Made by Benjamin Espenschied
-// V1.2.2
+// V1.2.3
 
 using System;
 
@@ -8,29 +8,56 @@ namespace myProgram
     class Program
     {
         CatanPlayer[] players;
-        int playerCount;
+        int playerCount = 1;
+        string mode = "startup";
+        CatanPlayer targetPlayer1;
+        CatanPlayer targetPlayer2;
         static void Main(string[] args)
         {
             //put code here
             
             Console.WriteLine("Welcome to Catan! How many players would you like?");
-            playerCount = Console.ReadLine();
+            playerCount = (int)Console.ReadLine();
             players = new CatanPlayer[playerCount];
             for (int i = 0; i < playerCount; i++)
             {
                 Console.WriteLine("What is the name of the " + (i+1).ToString() + "th player? ");
                 players[i] = new CatanPlayer(Console.ReadLine());
             }
+            
+            while (mode != "end")
+            {
+                Console.WriteLine("What would you like to do now?");
+                Console.WriteLine("You can 'add resourses', 'buy', 'exchange', 'trade', or 'show'. ");
+                
+                mode = Console.ReadLine();
+                
+                if (mode = "add resourses")
+                {
+                    Console.WriteLine("Who would you like to add to?");
+                    mode = Console.ReadLine();
+                    foreach (var player in players)
+                    {
+                        if (player.name == mode)
+                        {
+                            Console.WriteLine("What Material?");
+                            mode = Console.ReadLine();
+                            Console.WriteLine("How much?");
+                            player.AddResources(mode, (int)Console.ReadLine());
+                        }
+                    }
+                }
+            }
         }
     }
     
     class Product
     {
-        int oreCost;
-        int brickCost;
-        int sheepCost;
-        int grainCost;
-        int woodCost;
+        public int oreCost;
+        public int brickCost;
+        public int sheepCost;
+        public int grainCost;
+        public int woodCost;
         
         public Product(int ore, int brick, int sheep, int grain, int wood)
         {
@@ -168,6 +195,21 @@ namespace myProgram
         public void showStuff()
         {
             Console.WriteLine(name + " has " + ore + " ore, " + brick + " brick");
+        }
+        
+        public void AddResources(string resource, int howMuch)
+        {
+            if (resource == "ore") {
+                ore += howMuch;
+            } else if (resource == "brick") {
+                brick += howMuch;
+            } else if (resource == "sheep") {
+                sheep += howMuch;
+            } else if (resource == "grain") {
+                grain += howMuch;
+            } else if (resource == "wood") {
+                wood += howMuch;
+            }
         }
     }
 }
